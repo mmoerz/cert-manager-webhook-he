@@ -60,7 +60,7 @@ jobs:
           TEST_ZONE_NAME: ${{ secrets.HE_TEST_ZONE_NAME }}
         run: |
           echo "User: ${{ secrets.HE_USERNAME }}"
-          echo "Zone: ${{ TEST_ZONE_NAME }}"
+          echo "Zone: ${{ secrets.HE_TEST_ZONE_NAME }}"
           sed "s/%%HE_USERNAME%%/${HE_USERNAME}/; s/%%HE_PASSWORD%%/${HE_PASSWORD}/" testdata/he/secret.yaml.example > testdata/he/secret.yaml
           make test
 
