@@ -28,9 +28,12 @@ jobs:
       - name: Check git tag
         id: early
         if: github.ref_type == 'tag'
-        run: true 
+        run: true
       - name: fail
-        run: exit_with_failure
+        if: steps.early.conclusion == 'failure'
+        run: |
+          echo ${{ steps.early.conclusion }} 
+          exit_with_failure
 
   build:
     needs: check
