@@ -23,6 +23,7 @@ jobs:
   check:
     outputs: 
       status: ${{ steps.early.conclusion }}
+    runs-on: ubuntu-latest
     steps:
       - name: Check git tag
         id: early
