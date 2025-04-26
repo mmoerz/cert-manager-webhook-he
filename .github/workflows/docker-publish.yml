@@ -38,7 +38,9 @@ jobs:
           echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}"
       
       - name: Check git tag
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: github.ref_type == 'tag'
+        run: |
+          echo "git repo with tag"
 
       - name: Checkout repository
         uses: actions/checkout@v4
