@@ -9,7 +9,8 @@ on:
   push:
     branches: [ "master" ]
     # Publish semver tags as releases.
-    tags: [ 'v[0-9]+.[0-9]+.[0-9]+' ]
+    tags: 
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -19,8 +20,19 @@ env:
 
 
 jobs:
-  build:
+  check:
+    outputs: status ${{ steps.early.conclusion }}
+    steps:
+      - name: Check git tag
+        id: early
+        if: github.ref_type == 'tag'
+        run: exit_with_success
+      - name: fail
+        run: exit_with_failure
 
+  build:
+    needs: preflight
+    if: needs.check.outputs.status == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -37,10 +49,6 @@ jobs:
           echo "This job is running on ${{ runner.os }} ${{ runner.plattform }}"
           echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}"
       
-      - name: Check git tag
-        if: github.ref_type == 'tag'
-        run: |
-          echo "git repo with tag"
 
       - name: Checkout repository
         uses: actions/checkout@v4
