@@ -40,7 +40,7 @@ jobs:
   helm:
     needs: [label,docker]
     # run job if there were actual changes in docker or helm files
-    if: contains(needs.label.outputs.docker, 'Helm')
+    if: contains(needs.label.outputs.helm, 'Helm')
     with:
       event_name: ${{ github.event_name }}
     secrets: inherit
