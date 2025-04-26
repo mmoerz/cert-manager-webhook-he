@@ -57,7 +57,8 @@ jobs:
         env:
           HE_USERNAME: ${{ secrets.HE_USERNAME }}
           HE_PASSWORD: ${{ secrets.HE_PASSWORD }}
-          TEST_ZONE_NAME: ${{ secrets.HE_TEST_ZONE_NAME }}
+          # must be a fqdn that is terminated with a dot (adding dot here) !!!
+          TEST_ZONE_NAME: "${{ secrets.HE_TEST_ZONE_NAME }}."
         run: |
           echo "User: ${{ secrets.HE_USERNAME }}"
           echo "Zone: ${{ secrets.HE_TEST_ZONE_NAME }}"
