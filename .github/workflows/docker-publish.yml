@@ -28,7 +28,7 @@ jobs:
       - name: Check git tag
         id: early
         if: github.ref_type == 'tag'
-        run: exit_with_success
+        run: true 
       - name: fail
         run: exit_with_failure
 
