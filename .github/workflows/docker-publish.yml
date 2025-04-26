@@ -36,7 +36,7 @@ jobs:
   #        exit_with_failure
 
   build:
-    needs: check
+    #needs: check
     if: github.ref_type == 'tag'
       #if: needs.check.outputs.status == 'success'
     runs-on: ubuntu-latest
