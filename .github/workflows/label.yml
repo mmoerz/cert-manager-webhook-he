@@ -12,6 +12,7 @@ jobs:
   label:
     permissions:
       contents: write
+      pull-requests: write
     
     runs-on: ubuntu-latest
     name: Labelling
