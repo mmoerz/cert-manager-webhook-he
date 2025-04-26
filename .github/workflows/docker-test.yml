@@ -57,11 +57,10 @@ jobs:
           echo "User: ${{ secrets.HE_USERNAME }}"
           sed "s/%%HE_USERNAME%%/${HE_USERNAME}/; s/%%HE_PASSWORD%%/${HE_PASSWORD}/" testdata/he/secret.yaml.example > testdata/he/secret.yaml
 
-          #- name: Set up Go
-          #uses: actions/setup-go@v5
-          #with:
-          #go-version: 1.21
-
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.21
       
       - name: Run tests
         run: TEST_ZONE_NAME=${{ secrets.HE_ZONE }}. make test
