@@ -20,24 +20,25 @@ env:
 
 
 jobs:
-  check:
-    outputs: 
-      status: ${{ steps.early.conclusion }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check git tag
-        id: early
-        if: github.ref_type == 'tag'
-        run: true
-      - name: fail
-        if: steps.early.conclusion == 'failure'
-        run: |
-          echo ${{ steps.early.conclusion }} 
-          exit_with_failure
+  #check:
+  #  outputs: 
+  #    status: ${{ steps.early.conclusion }}
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Check git tag
+  #      id: early
+  #      if: github.ref_type == 'tag'
+  #      run: true
+  #    - name: fail
+  #      if: steps.early.conclusion != 'success'
+  #      run: |
+  #        echo ${{ steps.early.conclusion }} 
+  #        exit_with_failure
 
   build:
     needs: check
-    if: needs.check.outputs.status == 'success'
+    if: github.ref_type == 'tag'
+      #if: needs.check.outputs.status == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read
