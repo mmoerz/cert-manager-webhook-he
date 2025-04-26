@@ -57,6 +57,7 @@ jobs:
         env:
           HE_USERNAME: ${{ secrets.HE_USERNAME }}
           HE_PASSWORD: ${{ secrets.HE_PASSWORD }}
+        run: echo "User: ${{ secrets.HE_USERNAME }}"
         run: sed "s/%%HE_USERNAME%%/${HE_USERNAME}/; s/%%HE_PASSWORD%%/${HE_PASSWORD}/" testdata/he/secret.yaml.example > testdata/he/secret.yaml
 
       - name: Run tests
