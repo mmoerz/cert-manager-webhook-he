@@ -2,7 +2,8 @@
 
 ## testdata directory
 
-Copy the example Secret files, replacing `$HE_USERNAME` and `$HE_PASSWORD` with your
+Copy the example Secret files (testdata/secrets.yaml.example),
+replacing `$HE_USERNAME` and `$HE_PASSWORD` with your
 actual HE credentials:
 
 ```bash

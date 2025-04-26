@@ -60,8 +60,6 @@ jobs:
           # must be a fqdn that is terminated with a dot (adding dot here) !!!
           TEST_ZONE_NAME: "${{ secrets.HE_TEST_ZONE_NAME }}."
         run: |
-          echo "User: ${{ secrets.HE_USERNAME }}"
-          echo "Zone: ${{ secrets.HE_TEST_ZONE_NAME }}"
-          sed "s/%%HE_USERNAME%%/${HE_USERNAME}/; s/%%HE_PASSWORD%%/${HE_PASSWORD}/" testdata/he/secret.yaml.example > testdata/he/secret.yaml
+          sed "s/%%HE_USERNAME%%/${HE_USERNAME}/; s/%%HE_PASSWORD%%/${HE_PASSWORD}/" testdata/secret.yaml.example > testdata/he/secret.yaml
           make test
 

@@ -1,4 +1,4 @@
-name: Docker
+name: Docker publish
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -47,12 +47,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-
-      - name: Only pull requests can get through
-        uses: actions-ecosystem/action-release-label@v1
-        id: release-label
-        if: ${{ github.event.pull_request.merged == true }}
-
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
@@ -66,15 +60,15 @@ jobs:
         with:
           go-version: 1.21
 
-      # no tests at the moment, since secret is default now, user,pwd will not work
-      #- name: Set up secret file
-      #  env:
-      #    HE_USERNAME: ${{ secrets.HE_USERNAME }}
-      #    HE_PASSWORD: ${{ secrets.HE_PASSWORD }}
-      #  run: sed "s/%%HE_USERNAME%%/${HE_USERNAME}/; s/%%HE_PASSWORD%%/${HE_PASSWORD}/" testdata/he/secret.yaml.example > testdata/he/secret.yaml
-
-      #- name: Run tests
-      #  run: TEST_ZONE_NAME=${{ secrets.HE_ZONE }}. make test
+            #      - name: Setup secrets file and run tests
+            #        env:
+            #          HE_USERNAME: ${{ secrets.HE_USERNAME }}
+            #          HE_PASSWORD: ${{ secrets.HE_PASSWORD }}
+            #          # must be a fqdn that is terminated with a dot (adding dot here) !!!
+            #          TEST_ZONE_NAME: "${{ secrets.HE_TEST_ZONE_NAME }}."
+            #        run: |
+            #          sed "s/%%HE_USERNAME%%/${HE_USERNAME}/; s/%%HE_PASSWORD%%/${HE_PASSWORD}/" testdata/secret.yaml.example > testdata/he/secret.yaml
+            #          make test
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
@@ -92,6 +86,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # get latest tag from repository
+
+      # increase latest tag by one
+
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
@@ -103,8 +101,7 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=pep440,pattern={{version}},value
             type=sha
 
       # Build and push Docker image with Buildx (don't push on PR)

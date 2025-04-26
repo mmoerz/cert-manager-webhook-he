@@ -247,6 +247,13 @@ VERBOSE=1 TEST_ZONE_NAME=yourdomain.com. make test
 
 Have a look at `main_test.go` in case you want to customize the test suite.
 
+### Modified github actions
+
+mmoerz: github actions have been revamped to utilize github standard actions
+as much as possible for the actions (reducing security risks to the repository)
+
+for information setting up your fork see [doc/README](doc/README-github.com)
+
 ### Notes for fluxCD compatibility
 I suppose the schema error on deploy results from a missing helm json validation schema see: [Validating Helm Charts](http://www.arthurkoziel.com/validate-helm-chart-values-with-json-schemas/)
 
