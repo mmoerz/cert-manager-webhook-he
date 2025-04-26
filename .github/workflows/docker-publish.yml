@@ -107,12 +107,13 @@ jobs:
             type=pep440,pattern={{version}}
             type=sha
           labels: |
+            org.opencontainers.image.title="${{ github.repository }}"
             org.opencontainers.image.description="A webhook to use HE DNS as a DNS01 ACME Issuer for cert-manager."
-            org.opencontainers.image.licenses=
+            org.opencontainers.image.licenses="GNU GENERAL PUBLIC LICENSE v3"
 
 
-      - name: Build and bake
-        id: build-bake
+      # build and bake
+      - name: Build
         uses: docker/bake-action@v6
         with:
           files: |
