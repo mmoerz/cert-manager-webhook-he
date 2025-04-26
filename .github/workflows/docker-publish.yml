@@ -33,7 +33,7 @@ jobs:
         run: exit_with_failure
 
   build:
-    needs: preflight
+    needs: check
     if: needs.check.outputs.status == 'success'
     runs-on: ubuntu-latest
     permissions:
