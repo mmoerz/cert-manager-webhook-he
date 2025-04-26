@@ -113,6 +113,7 @@ jobs:
 
 
       # build and bake
+      # works so far even with upload
       - name: Build
         uses: docker/bake-action@v6
         with:
