@@ -112,6 +112,9 @@ jobs:
             org.opencontainers.image.licenses="GNU GENERAL PUBLIC LICENSE v3"
 
 
+      # hint for unknown/unknown architecture problem
+      # https://docs.docker.com/build/ci/github-actions/multi-platform/
+
       # build and bake
       # works so far even with upload
       #- name: Build
@@ -131,6 +134,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
+          platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           #labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
