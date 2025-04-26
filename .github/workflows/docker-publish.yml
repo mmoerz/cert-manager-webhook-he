@@ -21,7 +21,8 @@ env:
 
 jobs:
   check:
-    outputs: status ${{ steps.early.conclusion }}
+    outputs: 
+      status: ${{ steps.early.conclusion }}
     steps:
       - name: Check git tag
         id: early
