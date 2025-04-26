@@ -97,11 +97,13 @@ jobs:
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          env: DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=ref,event=pr
-            type=pep440,pattern={{version}},value
+            type=semver,pattern={{major}}.{{minor}}
+            type=pep440,pattern={{version}}
             type=sha
 
       # Build and push Docker image with Buildx (don't push on PR)
@@ -114,10 +116,11 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            DOCKER_METADATA_OUTPUT_JSON
+            #build-args: |
+            #DOCKER_METADATA_OUTPUT_JSON
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
