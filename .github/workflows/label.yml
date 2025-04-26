@@ -11,10 +11,7 @@ on: [pull_request_target]
 jobs:
   label:
     permissions:
-      metadata: read
       contents: write
-      custom-properties: write
-      labels: write
     
     runs-on: ubuntu-latest
     name: Labelling
