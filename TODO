@@ -1,2 +1,4 @@
 
-* optimize docker container (remove build stuff?)
+* reenable docker test
+* multi-arch build adaption for docker
+

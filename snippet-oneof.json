@@ -1,0 +1,15 @@
+"oneOf": [
+        {
+          "properties": {
+            "useSecrets": { "const": "true" }
+          },
+          "$ref": "https://natoka.at/usesecret.schema.json"
+        },
+        {
+          "properties": {
+            "deviceType": { "const": "false" }
+          },
+          "$ref": "https://natoka.at/usesecret.schema.json"    
+        }  
+      ]
+

@@ -230,7 +230,7 @@ To run the test suite, you must create two files under `testdata/he`. One
 (let's call it `config.json`) represents the configuration fragment that
 will be used by the webhook; the other one (`secret.yaml`) must contain the
 HE credentials (username and password). There are examples of both files
-under `testdata/he`.
+under `testdata/`.
 
 Once the files are in place, run the test suite with:
 
@@ -247,12 +247,14 @@ VERBOSE=1 TEST_ZONE_NAME=yourdomain.com. make test
 
 Have a look at `main_test.go` in case you want to customize the test suite.
 
+mmoerz: you may glean additional info from [doc/README-github.md](doc/README-github.md)
+
 ### Modified github actions
 
 mmoerz: github actions have been revamped to utilize github standard actions
 as much as possible for the actions (reducing security risks to the repository)
 
-for information setting up your fork see [doc/README](doc/README-github.md)
+for information setting up your fork see [doc/README-github.md](doc/README-github.md)
 
 ### Notes for fluxCD compatibility
 I suppose the schema error on deploy results from a missing helm json validation schema see: [Validating Helm Charts](http://www.arthurkoziel.com/validate-helm-chart-values-with-json-schemas/)
