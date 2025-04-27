@@ -154,15 +154,15 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
-      - name: prepare tag
-        env:
-          thetag: ${GITHUB_REF#refs/*/}
-        run: echo "tag=${thetag#refs/*/}" >> $GITHUB_OUTPUT
+          #      - name: prepare tag
+          #        env:
+          #          thetag: ${GITHUB_REF#refs/*/}
+          #        run: echo "tag=${thetag#refs/*/}" >> $GITHUB_OUTPUT
 
   helm:
     needs: [build]
     with:
-      github_ref: "${{ GITHUB_REF }}"
+      github_ref: "${{ github.ref }}"
     secrets: inherit
     uses: mmoerz/cert-manager-webhook-he/.github/workflows/helm-publish.yml@master
 
