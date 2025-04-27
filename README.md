@@ -209,11 +209,47 @@ If you want to be able to read secrets in any namespace, pass an empty list for
 
 ### FluxCD Configuration
 
-repository:
-<add here>
+The following examples install the webhook into the cert-manager namespace.
+The secret he-credentials is expected to be stored in cert-manager namespace.
 
-release:
-<add here>
+an example repository definition:
+```
+piVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: cert-manager-webhook-he
+  namespace: cert-manager
+spec:
+  interval: 24h
+  provider: generic
+  ref:
+    tag: 0.1.34
+  url: oci://ghcr.io/mmoerz/charts/cert-manager-webhook-he
+```
+
+an example release definition:
+```
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cert-manager-webhook-he
+  namespace: cert-manager
+spec:
+  interval: 1h
+  releaseName: cert-manager-webhook-he
+  chartRef:
+    kind: OCIRepository
+    name: cert-manager-webhook-he
+    namespace: cert-manager
+  #targetNamespace: cert-manager
+  values:
+    rbac:
+      secretNamespaces: cert-manager
+    auth:
+      useSecrets: true
+```
+
+
 
 Issuer or cluster-Issuer configuration see above.
 

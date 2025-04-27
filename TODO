@@ -1,4 +1,15 @@
 
 * reenable docker test
 * multi-arch build adaption for docker
+* could add a build log download action (there was an action that could be
+    coupled with vscode)
 
+* important:
+[ ] fix rbac flowcontrol
+
+webhook complains in logs:
+
+flowcontrol.apiserver.k8s.io/v1beta3 PriorityLevelConfiguration is deprecated in v1.29+, unavailable in v1.32+;
+use flowcontrol.apiserver.k8s.io/v1 PriorityLevelConfiguration                                                                                                 │
+flowcontrol.apiserver.k8s.io/v1beta3 FlowSchema is deprecated in v1.29+, unavailable in v1.32+; use flowcontrol.
+apiserver.k8s.io/v1 FlowSchema
