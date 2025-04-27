@@ -98,5 +98,5 @@ jobs:
 
       - name: Push helm package to OCI registry
         run: |
-          helm push ${CHART_NAME}-${{ steps.bump-chart-semver.outputs.new_version }}.tgz oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts
+          helm push "${CHART_NAME}-${{ steps.stripped-tag.outputs.version }}.tgz" oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts
 
