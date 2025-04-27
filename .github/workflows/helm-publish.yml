@@ -64,13 +64,13 @@ jobs:
           echo "github_ref: ${gref}"
           tag="${gref#refs/*/}"
           echo "tag: $tag"
-          echo "tag=${ tag }" >> "$GITHUB_OUTPUT"
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
 
       - name: Stripping v from version tag
         id: stripped-tag
         run: |
           tag= "${{ steps.get-tag.outputs.tag }}"
-          version = "${$tag#v//)"
+          version="${tag#v//)"
           echo "Version: ${version}"
           echo "version=$version" >> "$GITHUB_OUTPUT"
 

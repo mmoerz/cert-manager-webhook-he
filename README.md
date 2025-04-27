@@ -7,7 +7,18 @@
 A webhook to use [HE DNS](https://dns.he.net) as a DNS01 ACME Issuer for [cert-manager](https://github.com/jetstack/cert-manager).
 
 MMoerz: Trying to modify it so that fluxCD can work with the helm chart.
-
+MMoerz: What's different to the forked repo?
+* github actions are heavily modified.
+  github actions are almost only github approved ones (more secure).
+  to be exact only one of those remains.
+* version schema has changed. docker container version and helm chart are in
+  sync now (no reason to have them not in sync, this repo is an upstream one).
+* development here should be trunc based. Only new version tags trigger a build
+  of a new docker container and helm chart.
+* added a validation schema to the helm chart. (Howevermuch benefits this
+    might bring us.)
+* useSecrets default is true
+* docker image is signed
 
 ## Installation
 
@@ -53,6 +64,7 @@ $ kubectl get pods -n cert-manager --watch
 $ kubectl logs -n cert-manager cert-manager-webhook-he-xxxxx
 ```
 
+FluxCD configuration see below.
 
 ## Concepts and configuration
 
@@ -100,7 +112,7 @@ stringData:
 ```
 
 If you use environment variables, you must pass them as `auth.heUsername` and
-`auth.hePassword` when deploying the Helm chart.
+`auth.hePassword` when deploying the Helm chart. (see FluxCD for an example)
 
 Here's a sample `Issuer` configuration for the `login` mode:
 
@@ -194,7 +206,15 @@ If you want to be able to read secrets in any namespace, pass an empty list for
 `rbac.secretNamespaces`, and a `ClusterRole` will be created instead of a `Role`
 (use with caution).
 
+### FluxCD Configuration
 
+repository:
+<add here>
+
+release:
+<add here>
+
+Issuer or cluster-Issuer configuration see above.
 
 ## Development
 
