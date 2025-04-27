@@ -7,7 +7,8 @@
 A webhook to use [HE DNS](https://dns.he.net) as a DNS01 ACME Issuer for [cert-manager](https://github.com/jetstack/cert-manager).
 
 MMoerz: Trying to modify it so that fluxCD can work with the helm chart.
-MMoerz: What's different to the forked repo?
+
+MMoerz: What's different to the forked upstream repo?
 * github actions are heavily modified.
   github actions are almost only github approved ones (more secure).
   to be exact only one of those remains.
@@ -276,6 +277,8 @@ mmoerz: I refactored all github actions while preserving only small parts of
 upstream. This basically boils down to a completely different build behaviour.
 Using my actions the docker image and helm chart will have identical version 
 numbers and they will only be built when a pushing a tagged delta to master.
+Additionally there is an action for pull_requests on master that will run tests
+for the docker image and the helm chart.
 
 github actions have been revamped to utilize github standard actions
 as much as possible for the actions (reducing security risks to the repository).
@@ -291,6 +294,8 @@ ghcr repository.
 On success the action calls docker-helm.yml that lints, builds and pushs
 the helm chart.
 
+Code reuse is currently not optimal, test and lint checks would need their own
+action files in order to optimize and reduce duplicate code between actions.
 
 for information setting up your fork see [doc/README-github.md](doc/README-github.md)
 
