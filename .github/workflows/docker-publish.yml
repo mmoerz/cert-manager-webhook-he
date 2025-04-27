@@ -157,7 +157,7 @@ jobs:
       - name: prepare tag
         env:
           thetag: ${GITHUB_REF#refs/*/}
-        run: echo "tag=${inputs.repo_tag#refs/*/}" >> $GITHUB_OUTPUT
+        run: echo "tag=${thetag#refs/*/}" >> $GITHUB_OUTPUT
 
   helm:
     needs: [build]
