@@ -154,3 +154,10 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
+  helm:
+    needs: [build]
+    with:
+      repo_tag: ${{GITHUB_REF}}
+    secrets: inherit
+    uses: mmoerz/cert-manager-webhook-he/.github/workflows/helm-publish.yml@master
+

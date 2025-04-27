@@ -1,10 +1,15 @@
 name: "Helm test, build, push"
 
 on:
-  workflow_run:
-    workflows: ["Docker test, build, push"]
-    types:
-      - completed
+  #  workflow_run:
+  #    workflows: ["Docker test, build, push"]
+  #    types:
+  #      - completed
+  workflow_call:
+    inputs:
+      repo_tag:
+        type: string
+        required: true
 
 env:
   REGISTRY: ghcr.io
@@ -15,7 +20,7 @@ env:
 
 jobs:
   helm-test:
-    if: github.ref_type == 'tag'
+    #if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
     steps:
 
