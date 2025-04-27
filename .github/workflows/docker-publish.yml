@@ -157,7 +157,7 @@ jobs:
   helm:
     needs: [build]
     env:
-      raw_tag: ${{ GITHUB_REF }}
+      raw_tag: ${GITHUB_REF#refs/*/}
     with:
       repo_tag: ${{ raw_tag }}
     secrets: inherit
