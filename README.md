@@ -267,12 +267,30 @@ VERBOSE=1 TEST_ZONE_NAME=yourdomain.com. make test
 
 Have a look at `main_test.go` in case you want to customize the test suite.
 
-mmoerz: you may glean additional info from [doc/README-github.md](doc/README-github.md)
+mmoerz: you may glean additional test info from
+[doc/README-test.md](doc/README-test.md)
 
 ### Modified github actions
 
-mmoerz: github actions have been revamped to utilize github standard actions
-as much as possible for the actions (reducing security risks to the repository)
+mmoerz: I refactored all github actions while preserving only small parts of
+upstream. This basically boils down to a completely different build behaviour.
+Using my actions the docker image and helm chart will have identical version 
+numbers and they will only be built when a pushing a tagged delta to master.
+
+github actions have been revamped to utilize github standard actions
+as much as possible for the actions (reducing security risks to the repository).
+
+Building the docker container relies on ``docker/*`` actions. Currently 
+build and push step is buggy, producing two images, one for linux/amd64 and one
+for unknown, unknown plattform.
+
+The docker-deploy.yml is an on push on master rule that ignores all pushs to 
+github that
+lack a version tag. It tests and creates and then pushs a docker image to 
+ghcr repository.
+On success the action calls docker-helm.yml that lints, builds and pushs
+the helm chart.
+
 
 for information setting up your fork see [doc/README-github.md](doc/README-github.md)
 
