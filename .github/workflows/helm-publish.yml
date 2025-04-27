@@ -1,11 +1,10 @@
 name: "Helm test, build, push"
 
 on:
-  workflow_call:
-    inputs:
-      event_name:
-        type: string
-        required: true
+  workflow_run:
+    workflows: ["Docker publish"]
+    types:
+      - completed
 
 env:
   REGISTRY: ghcr.io
@@ -16,12 +15,13 @@ env:
 
 jobs:
   helm-test:
+    if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
     steps:
 
       # debug
       - run: |
-          echo "This job was triggered by this event: ${{ github.event_name }}"
+          #echo "This job was triggered by this event: ${{ github.event_name }}"
           echo "This job is running on ${{ runner.os }}"
           echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}"
 
@@ -48,41 +48,31 @@ jobs:
         with:
           fetch-depth: 0 
           
-      - name: Get last image tag
-        uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
+      - name: Get current tag
+        #uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-tag
+        run: |
+          echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
 
       - name: Stripping v from version tag
-        id: stripped-latest-tag
+        id: stripped-tag
         run: |
-          thetag = "{{ steps.get-latest-tag.outputs.tag }}"
+          thetag = "{{ steps.get-tag.outputs.tag }}"
           version = "${thetag//v/}"
           echo "Version: ${version}"
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
+      # could be replaced with an uglier sed command
       - name: Set image version in chart
         uses: mikefarah/yq@master
         with:
-          cmd: yq -i '.image.tag = "${{ steps.stripped-latest-tag.outputs.tag }}"' "$CHART_DIR/values.yaml"
+          cmd: yq -i '.image.tag = "${{ steps.stripped-tag.outputs.version }}"' "$CHART_DIR/values.yaml"
 
-      - name: Discover helm chart version
-        id: chart-get-semver
-        uses: mikefarah/yq@master
-        with:
-          cmd: yq -r .version "$CHART_DIR/Chart.yaml"
-        
-      - name: bump chart version
-        #uses: actions-ecosystem/action-bump-semver@v1
-        uses: fiddlermikey/action-bump-semver@main
-        id: bump-chart-semver
-        with:
-          current_version: ${{ steps.chart-get-semver.outputs.result }}
-          level: patch
-
+      # could be replaced with an uglier sed command
       - name: Update chart version in Chart.yaml
         uses: mikefarah/yq@master
         with:
-          cmd: yq -i '.version = "${{ steps.bump-chart-semver.outputs.new_version }}"' "$CHART_DIR/Chart.yaml"
+          cmd: yq -i '.version = "${{ steps.stripped-latest-tag.outputs.version }}"' "$CHART_DIR/Chart.yaml"
 
       - name: Log in to the Container registry
         if: github.ref_type != 'pull_request'
@@ -99,8 +89,3 @@ jobs:
         run: |
           helm push ${CHART_NAME}-${{ steps.bump-chart-semver.outputs.new_version }}.tgz oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts
 
-      - name: Commit changed files
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          file_pattern: "${{ env.CHART_DIR }}/*"
-          commit_message: "Autoupdate: image tag (values.yaml) to ${{ steps.image-tag.outputs.tag }}, chart tag (Chart.yaml) to ${{ steps.bump-chart-semver.outputs.new_version }}"
