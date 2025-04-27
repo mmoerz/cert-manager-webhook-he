@@ -7,7 +7,7 @@ on:
   #      - completed
   workflow_call:
     inputs:
-      repo_tag:
+      github_ref:
         type: string
         required: true
 
@@ -55,15 +55,20 @@ jobs:
           
       - name: Get current tag
         #uses: actions-ecosystem/action-get-latest-tag@v1
+        # latest can also be extracted using git client:
+        # latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`
         id: get-tag
+        env:
+          tag: ${{ inputs.github_ref }}
         run: |
-          echo "tag=${{ inputs.repo_tag }}" >> "$GITHUB_OUTPUT"
+          echo "tag: ${tag#refs/*/}"
+          echo "tag=${{ tag }}" >> "$GITHUB_OUTPUT"
 
       - name: Stripping v from version tag
         id: stripped-tag
         run: |
-          thetag = "{{ steps.get-tag.outputs.tag }}"
-          version = "${thetag//v/}"
+          tag = "${{ steps.get-tag.outputs.tag }}"
+          version = "${$tag#v//)"
           echo "Version: ${version}"
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
