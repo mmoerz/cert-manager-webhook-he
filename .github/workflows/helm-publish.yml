@@ -61,14 +61,14 @@ jobs:
         env:
           thetag: ${{ inputs.github_ref }}
         run: |
-          tag = "${$thetag#refs/*/}"
+          tag= "${$thetag#refs/*/}"
           echo "tag: $tag"
           echo "tag=${ tag }" >> "$GITHUB_OUTPUT"
 
       - name: Stripping v from version tag
         id: stripped-tag
         run: |
-          tag = "${{ steps.get-tag.outputs.tag }}"
+          tag= "${{ steps.get-tag.outputs.tag }}"
           version = "${$tag#v//)"
           echo "Version: ${version}"
           echo "version=$version" >> "$GITHUB_OUTPUT"
