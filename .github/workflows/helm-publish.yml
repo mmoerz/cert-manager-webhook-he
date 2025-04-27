@@ -59,10 +59,11 @@ jobs:
         # latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`
         id: get-tag
         env:
-          tag: ${{ inputs.github_ref }}
+          thetag: ${{ inputs.github_ref }}
         run: |
-          echo "tag: ${tag#refs/*/}"
-          echo "tag=${{ tag }}" >> "$GITHUB_OUTPUT"
+          tag = "${$thetag#refs/*/}"
+          echo "tag: $tag"
+          echo "tag=${ tag }" >> "$GITHUB_OUTPUT"
 
       - name: Stripping v from version tag
         id: stripped-tag
