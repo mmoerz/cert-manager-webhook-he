@@ -62,7 +62,7 @@ jobs:
           gref: ${{ inputs.github_ref }}
         run: |
           echo "github_ref: ${gref}"
-          tag= "${$gref#refs/*/}"
+          tag= "${gref#refs/*/}"
           echo "tag: $tag"
           echo "tag=${ tag }" >> "$GITHUB_OUTPUT"
 
