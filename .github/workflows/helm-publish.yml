@@ -2,7 +2,7 @@ name: "Helm test, build, push"
 
 on:
   workflow_run:
-    workflows: ["Docker publish"]
+    workflows: ["Docker test, build, push"]
     types:
       - completed
 
