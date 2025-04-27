@@ -156,8 +156,10 @@ jobs:
 
   helm:
     needs: [build]
+    env:
+      raw_tag: ${{ GITHUB_REF }}
     with:
-      repo_tag: ${{GITHUB_REF}}
+      repo_tag: ${{ raw_tag }}
     secrets: inherit
     uses: mmoerz/cert-manager-webhook-he/.github/workflows/helm-publish.yml@master
 
