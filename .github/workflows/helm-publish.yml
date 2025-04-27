@@ -70,7 +70,7 @@ jobs:
         id: stripped-tag
         run: |
           tag="${{ steps.get-tag.outputs.tag }}"
-          version="${tag#//v}"
+          version="${tag//v}"
           echo "Version: ${version}"
           echo "version=${version}" >> "$GITHUB_OUTPUT"
 
