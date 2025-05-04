@@ -1,7 +1,7 @@
 # multi-stage build
 # stage1: fetch libraries
 # test5
-FROM golang:1.21-alpine AS build_deps
+FROM golang:1.22-alpine3.19 AS build_deps
 
 RUN apk add --no-cache git
 
@@ -20,7 +20,7 @@ COPY . .
 RUN CGO_ENABLED=0 go build -o webhook -ldflags '-w -extldflags "-static"' .
 
 # stage3: run executable
-FROM alpine:3.15
+FROM alpine:3.18
 
 RUN apk add --no-cache ca-certificates
 
